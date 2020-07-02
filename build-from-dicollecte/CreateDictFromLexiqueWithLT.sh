@@ -84,6 +84,7 @@ java -cp "$ToolPath""$ToolName"".jar" \
 org.languagetool.tools.POSDictionaryBuilder \
     -i $Input.LT.txt \
     -info $Output.info \
+    -freq fr_wordlist.xml \
     -o $Output.dict
 
 java -cp "$ToolPath""$ToolName"".jar" \
@@ -99,7 +100,7 @@ org.languagetool.tools.SynthDictionaryBuilder \
      -info "$Output""_synth.info" \
      -o "$Output""_synth.dict"
 
-mv -f /tmp/SynthDictionaryBuilder*.txt_tags.txt ./"$Output""_tags.txt"
+mv -f "$Output""_synth.dict_tags.txt" ./"$Output""_tags.txt"
 
 #comparaison des dictionnaires version 6.1 et 6.4
 if [[ ( "$Debug" == true ) && ( -f $OldDict.dict ) ]]
