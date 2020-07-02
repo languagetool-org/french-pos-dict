@@ -37,7 +37,7 @@ fi
 
 echo -e "\n${0}"" is running ..."
 
-rm $Output*
+#rm $Output*
 
 # Téléchargement du Lexique Dicollecte
 echo "Donwloading lexique-dicollecte ..."

@@ -1,3 +1,7 @@
 target
 *.iml
 *.dict
+lexique-dicollecte*
+README_lexique.txt
+old-french-*
+*.dump
