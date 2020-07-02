@@ -17,4 +17,4 @@ fsa.dict.speller.ignore-diacritics=true
 fsa.dict.speller.convert-case=true
 
 #TODO: to be added 
-fsa.dict.frequency-included=false
+fsa.dict.frequency-included=true
