@@ -18,12 +18,14 @@
 #   abaque abaque N m s
 #   abaques abaque N m p
 #
+# http://grammalecte.net/download/fr/lexique-grammalecte-fr-v7.0.zip
 #
 ToolPath="../../languagetool/languagetool-tools/target/"
-ToolName="languagetool-tools-5.1-SNAPSHOT-jar-with-dependencies"
-Input="lexique-dicollecte-fr-v6.4.1"
+ToolName="languagetool-tools-5.2-SNAPSHOT-jar-with-dependencies"
+Input="lexique-grammalecte-fr-v7.0"
+
 Output="french"
-OldDict="old-french-6.1"
+OldDict="old-french-6.4"
 #Debug=false
 Debug=true
 . ./SuppressionDoublons.sh
@@ -42,7 +44,7 @@ echo -e "\n${0}"" is running ..."
 # Téléchargement du Lexique Dicollecte
 echo "Donwloading lexique-dicollecte ..."
 if [ ! -f $Input.zip ]; then
-  wget http://www.dicollecte.org/download/fr/$Input.zip
+  wget http://grammalecte.net/download/fr/$Input.zip
 fi
 
 mv french.dict $OldDict.dict 
@@ -129,5 +131,3 @@ if [[ ( "$Debug" == false ) ]]
     rm *.dump
 fi
 echo -e "\nDone.\n"
-
-
