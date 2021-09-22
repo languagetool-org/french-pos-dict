@@ -10,6 +10,7 @@ D f p
 D f s
 D m p
 D m s
+F
 I
 J e p
 J e s
@@ -34,6 +35,13 @@ N m p
 N m s
 N m sp
 P
+P+D e p
+P+D e s
+P+D f s
+P+D m s
+P+R rel f p
+P+R rel m p
+P+R rel m s
 R
 R dem
 R dem e sp
@@ -42,12 +50,11 @@ R dem f s
 R dem m p
 R dem m s
 R e p
+R e s
 R f p
 R f s
 R inte
-R inte f p
 R inte f s
-R inte m p
 R inte m s
 R m p
 R m s
@@ -63,6 +70,7 @@ R pers obj 3 f p
 R pers obj 3 f s
 R pers obj 3 m p
 R pers obj 3 m s
+R pers obj 3 sp
 R pers suj 1 p
 R pers suj 1 s
 R pers suj 2 p
@@ -73,6 +81,7 @@ R pers suj 3 f p
 R pers suj 3 f s
 R pers suj 3 m p
 R pers suj 3 m s
+R pers suj 3 p
 R rel e sp
 R rel f p
 R rel f s
@@ -80,8 +89,10 @@ R rel m p
 R rel m s
 T e p
 T e s
+T e sp
 T f p
 T f s
+T f sp
 T m p
 T m s
 V avoir con pres 1 p
@@ -242,4 +253,6 @@ Z e sp
 Z f p
 Z f s
 Z f sp
+Z m p
+Z m s
 Z m sp

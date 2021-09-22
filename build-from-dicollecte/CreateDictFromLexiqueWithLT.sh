@@ -21,7 +21,7 @@
 # http://grammalecte.net/download/fr/lexique-grammalecte-fr-v7.0.zip
 #
 ToolPath="../../languagetool/languagetool-tools/target/"
-ToolName="languagetool-tools-5.2-SNAPSHOT-jar-with-dependencies"
+ToolName="languagetool-tools-5.5-SNAPSHOT-jar-with-dependencies"
 Input="lexique-grammalecte-fr-v7.0"
 
 Output="french"
@@ -66,7 +66,12 @@ echo "step 3 ..."
 chmod +x Simplification.sh
 ./Simplification.sh $Input.maigre.LT 
 echo "step 4 ..."
-cat $Input.maigre.LT.txt | sort > $Input.sorted.txt 
+
+grep -Fvxf ../lt-changes/removed.txt $Input.maigre.LT.txt > $Input.removed.LT.txt
+grep -v '#' ../lt-changes/added.txt > ../lt-changes/added-clean.txt
+cat ../lt-changes/added-clean.txt $Input.removed.LT.txt > $Input.added.LT.txt
+
+cat $Input.added.LT.txt | sort > $Input.sorted.txt 
 echo "step 5 ..."
 FontionSuppressionDoublons $Input.sorted.txt
 mv $Input.sorted.txt $Input.LT.txt
