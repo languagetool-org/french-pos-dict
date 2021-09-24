@@ -25,7 +25,7 @@ ToolName="languagetool-tools-5.5-SNAPSHOT-jar-with-dependencies"
 Input="lexique-grammalecte-fr-v7.0"
 
 Output="french"
-OldDict="old-french-6.4"
+OldDict="old-french"
 #Debug=false
 Debug=true
 . ./SuppressionDoublons.sh
@@ -67,9 +67,13 @@ chmod +x Simplification.sh
 ./Simplification.sh $Input.maigre.LT 
 echo "step 4 ..."
 
+# add changes from added.txt and removed.txt
 grep -Fvxf ../lt-changes/removed.txt $Input.maigre.LT.txt > $Input.removed.LT.txt
 grep -v '#' ../lt-changes/added.txt > ../lt-changes/added-clean.txt
 cat ../lt-changes/added-clean.txt $Input.removed.LT.txt > $Input.added.LT.txt
+
+# fix lemma in adjectives: infitintive -> adj m s 
+sed -i -E 's/^(.*(é|ée|és|ées)\t.*)er\t(J .*)$/\1é\t\3/' $Input.added.LT.txt
 
 cat $Input.added.LT.txt | sort > $Input.sorted.txt 
 echo "step 5 ..."
@@ -126,6 +130,8 @@ org.languagetool.tools.DictionaryExporter \
 # output:
 # 624133 french.dump
 # 617826 old-french-6.1.dump
+echo "Differences in dump.diff"
+diff $OldDict.dump $Output.dump > dump.diff
 
 fi
 

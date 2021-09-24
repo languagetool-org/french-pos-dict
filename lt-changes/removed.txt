@@ -405,3 +405,8 @@ rosés	roser	J m p
 rosée	roser	J f s
 rosées	roser	J f p
 1re	1re	J f s
+
+# after rebuilding the dictionary
+marrée	marrer	J f s
+marrées	marrer	J f p
+marrés	marrer	J m p
