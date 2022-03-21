@@ -20,8 +20,10 @@
 #
 # http://grammalecte.net/download/fr/lexique-grammalecte-fr-v7.0.zip
 #
-ToolPath="../../languagetool/languagetool-tools/target/"
-ToolName="languagetool-tools-5.5-SNAPSHOT-jar-with-dependencies"
+#ToolPath="../../languagetool/languagetool-tools/target/"
+ToolPath="../../languagetool/languagetool-standalone/target/LanguageTool-5.7-SNAPSHOT/LanguageTool-5.7-SNAPSHOT/"
+#ToolName="languagetool-tools-5.7-SNAPSHOT-jar-with-dependencies"
+ToolName="languagetool"
 Input="lexique-grammalecte-fr-v7.0"
 
 Output="french"

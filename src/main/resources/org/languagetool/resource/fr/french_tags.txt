@@ -87,6 +87,10 @@ R rel f p
 R rel f s
 R rel m p
 R rel m s
+S
+S e sp
+S f p
+S f s
 T e p
 T e s
 T e sp
