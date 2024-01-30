@@ -7,6 +7,8 @@
 #
 # Author: Dominique Pellé <dominique.pelle@gmail.com>
 use strict;
+use warnings;
+
 
 #my $FileName = "lexique-dicollecte-fr-v6.4";
 

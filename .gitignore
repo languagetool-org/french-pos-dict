@@ -1,4 +1,4 @@
-target
+results/java-lt/target/
 *.iml
 *.dict
 lexique-dicollecte*
