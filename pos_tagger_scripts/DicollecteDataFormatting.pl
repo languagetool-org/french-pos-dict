@@ -46,7 +46,7 @@ while (<DATA>) { print OUT }
 while (<IN>) {
   my @col = split "\t";
 next unless ($#col >= 1);
-  my ($flex, $lemma, $tag) = @col[0, 1, 2];
+  my ($flex, $lemma, $tag) = @col[2, 3, 4];
 
   my $aux = '';
      $aux = ' avoir' if ($lemma eq 'avoir');

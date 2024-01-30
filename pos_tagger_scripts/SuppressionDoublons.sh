@@ -13,7 +13,7 @@ MyLine2=""
 
 #rm "Doublons.""$FileName"
 
-sed -e 's/[\t]/\\\\t/g;' "$FileName" > "$FileName"".tmp"
+sed -e "s/[\t]/\\\\t/g;" "$FileName" > "$FileName"".tmp"
 rm $FileName
 while read MyLine
 
