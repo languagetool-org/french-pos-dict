@@ -3,44 +3,38 @@
 SOURCE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source "${SOURCE_DIR}/SuppressionDoublons.sh"
 
-# Detect the operating system so we pick the right sed.
-OS="$(uname)"
-export OS
-
-function sed_cmd {
-  _expr="$1"
-  _filepath=$2
-  if [[ "$OS" == "Darwin" ]]; then
-    sed -i '' -E "$_expr" "$_filepath"
-  else
-    sed -i -E "$_expr" "$_filepath"
-  fi
-}
-
 DICOLLECTE_FILENAME="lexique-grammalecte-fr-v7.0"
 SRC_DICOLLECTE_FILEPATH="${DATA_SRC_DIR}/${DICOLLECTE_FILENAME}"
-LT_DICOLLECTE_FILEPATH="${RESULTS_DIR}/${DICOLLECTE_FILENAME}"
+LT_DICOLLECTE_FILEPATH="${RESULTS_DIR}/fr"
 
 cp "${SRC_DICOLLECTE_FILEPATH}.txt" "${LT_DICOLLECTE_FILEPATH}.txt"
 
 echo "Formatting lexical data..."
-echo "step 1 ..."
+
+echo "Step 1: dégraissage..."
 bash "${SOURCE_DIR}/Degraissage.sh" "${LT_DICOLLECTE_FILEPATH}"
-echo "step 2 ..."
+# Main output: fr.maigre.txt
+
+echo "Step 2: dicollecte formatting with Perl..."
 perl "${SOURCE_DIR}/DicollecteDataFormatting.pl" "${LT_DICOLLECTE_FILEPATH}"
-echo "step 3 ..."
-bash "${SOURCE_DIR}/Simplification.sh" "${LT_DICOLLECTE_FILEPATH}.maigre.LT"
-echo "step 4 ..."
+# Main output: fr.lt.txt
 
-# Add changes from added.txt and removed.txt
-grep -Fvxf "${LT_CHANGES_DIR}/removed.txt" "${LT_DICOLLECTE_FILEPATH}.maigre.LT.txt" > "${LT_DICOLLECTE_FILEPATH}.removed.LT.txt"
+echo "Step 3: simplification..."
+bash "${SOURCE_DIR}/Simplification.sh" "${LT_DICOLLECTE_FILEPATH}.lt"
+# Main output: fr.lt.simplif.txt
+
+echo "Step 4: making changes from added/removed.txt..."
+grep -Fvxf "${LT_CHANGES_DIR}/removed.txt" "${LT_DICOLLECTE_FILEPATH}.lt.simplif.txt" > "${LT_DICOLLECTE_FILEPATH}.removed.lt.txt"
 grep -v '#' "${LT_CHANGES_DIR}/added.txt" > "${LT_CHANGES_DIR}/added-clean.txt"
-cat "${LT_CHANGES_DIR}added-clean.txt" "${LT_DICOLLECTE_FILEPATH}.removed.LT.txt" > "${LT_DICOLLECTE_FILEPATH}.added.LT.txt"
+cat "${LT_CHANGES_DIR}/added-clean.txt" "${LT_DICOLLECTE_FILEPATH}.removed.lt.txt" > "${LT_DICOLLECTE_FILEPATH}.added.lt.txt"
+# Main output: fr.added.lt.txt
 
-# Fix lemma in adjectives: infinitive -> adj m s
-sed_cmd 's/^(.*(é|ée|és|ées)\t.*)er\t(J .*)$/\1é\t\3/' "${LT_DICOLLECTE_FILEPATH}.added.LT.txt"
+echo "Step 5: fixing adjective lemmata: infinitive -> adj m s..."
+sed -E 's/^(.*(é|ée|és|ées)\t.*)er\t(J .*)$/\1é\t\3/' "${LT_DICOLLECTE_FILEPATH}.added.lt.txt" > "${LT_DICOLLECTE_FILEPATH}.fixed.lt.txt"
 
-sort "${LT_DICOLLECTE_FILEPATH}.added.LT.txt" > "${LT_DICOLLECTE_FILEPATH}.sorted.txt"
-echo "step 5 ..."
-FontionSuppressionDoublons "${LT_DICOLLECTE_FILEPATH}.sorted.txt"
-cp "${LT_DICOLLECTE_FILEPATH}.sorted.txt" "${RESULTS_DIR}/dict.txt"
+echo "Step 6: sorting..."
+sort "${LT_DICOLLECTE_FILEPATH}.fixed.lt.txt" > "${LT_DICOLLECTE_FILEPATH}.sorted.txt"
+
+echo "Step 7: deduping..."
+FontionSuppressionDoublons "$LT_DICOLLECTE_FILEPATH"
+cp "${LT_DICOLLECTE_FILEPATH}.deduped.txt" "${RESULTS_DIR}/dict.txt"

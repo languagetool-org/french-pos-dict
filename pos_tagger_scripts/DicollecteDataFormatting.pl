@@ -15,8 +15,8 @@ use warnings;
 
 my $FileName  = $ARGV[0];
 my $in = "$FileName.maigre.txt";
-my $out = "$FileName.maigre.LT.txt";
-my $err = "$FileName.maigre.LT.err";
+my $out = "$FileName.lt.txt";
+my $err = "$FileName.lt.err";
 
 open(IN,  "< $in")  or die "can't open $in: $!\n";
 open(OUT, "> $out") or die "can't open $out: $!\n";
