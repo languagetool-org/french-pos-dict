@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 
 SOURCE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source "${SOURCE_DIR}/SuppressionDoublons.sh"
@@ -6,6 +6,9 @@ source "${SOURCE_DIR}/SuppressionDoublons.sh"
 DICOLLECTE_FILENAME="lexique-grammalecte-fr-v7.0"
 SRC_DICOLLECTE_FILEPATH="${DATA_SRC_DIR}/${DICOLLECTE_FILENAME}"
 LT_DICOLLECTE_FILEPATH="${RESULTS_DIR}/fr"
+
+# Remove all "fr." prefixed files from results dir before starting
+rm "${RESULTS_DIR}/fr."*
 
 cp "${SRC_DICOLLECTE_FILEPATH}.txt" "${LT_DICOLLECTE_FILEPATH}.txt"
 

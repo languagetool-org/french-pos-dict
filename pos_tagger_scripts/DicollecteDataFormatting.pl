@@ -47,18 +47,14 @@ while (<IN>) {
   my @col = split "\t";
 next unless ($#col >= 1);
   my ($flex, $lemma, $tag) = @col[0, 1, 2];
-    if ($tag eq "\n") {
-        print "tag is somehow a newline??: $flex, $lemma (line $. of $in)\n";
-    }
-
+    chomp $tag;
   my $aux = '';
      $aux = ' avoir' if ($lemma eq 'avoir');
      $aux = ' etre'  if ($lemma eq 'être');
 
-  if ($tag =~ /^((?:(?:nom|adj|prn|geo|patr|npr|det|detdem|detpos|detneg|detind|titr|properobj|prodem|proneg|proind|proint|prorel|prep) )+)(mas|fem|epi) (sg|pl|inv)$/)
-    { 
-my $tmp02=$2;
-my $tmp03=$3;
+  if ($tag =~ /^((?:(?:nom|adj|prn|geo|patr|npr|det|detdem|detpos|detneg|detind|titr|properobj|prodem|proneg|proind|proint|prorel|prep) )+)(mas|fem|epi) (sg|pl|inv)$/) {
+    my $tmp02=$2;
+    my $tmp03=$3;
     for my $a (split(' ', $1)) {
         if( $a =~ /^prep$/ )
             {
