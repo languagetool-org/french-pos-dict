@@ -1,0 +1,104 @@
+name: Build
+
+on:
+  push:
+    paths:
+      - "data/**"
+      - ".github/workflows/build.yml"
+  pull_request:
+    branches:
+      - "main"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11"]
+    steps:
+    - name: Set paths
+      run: |
+        lt_dir="${{ github.workspace }}/lt"
+        echo "LT_HOME=${lt_dir}/languagetool" >> $GITHUB_ENV
+        echo "FR_DICT_HOME=${lt_dir}/french-pos-dict" >> $GITHUB_ENV
+        echo "LT_TMP_DIR=${lt_dir}/tmp" >> $GITHUB_ENV
+
+    - uses: actions/checkout@v3
+      with:
+        path: ${{ env.FR_DICT_HOME }}
+        repository: ${{ env.GITHUB_ACTION_REPOSITORY }}
+        fetch-depth: 0
+        submodules: recursive
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Set up Poetry
+      uses: Gr1N/setup-poetry@v8
+
+    - name: Check Poetry config
+      working-directory: ${{ env.FR_DICT_HOME }}
+      run: poetry check
+
+    # Ideally this will also install the 'dict_tools' submodule as a separate package ('dictionary-tools')
+    - name: Install Python dependencies
+      working-directory: ${{ env.FR_DICT_HOME }}
+      run: poetry install
+      env:
+        POETRY_HTTP_BASIC_GITLAB_USERNAME: "lt-ai-package-registry"
+        POETRY_HTTP_BASIC_GITLAB_PASSWORD: ${{ secrets.POETRY_HTTP_BASIC_GITLAB_PASSWORD }}
+
+    - name: Set dictionary version
+      working-directory: ${{ env.FR_DICT_HOME }}
+      run: echo "FR_DICT_VERSION=test-$(git describe --tags --abbrev=0 | sed 's/^v//g')" >> $GITHUB_ENV
+
+    - name: Set up Perl
+      uses: shogo82148/actions-setup-perl@v1
+      with:
+        perl-version: "5.38"
+
+    - name: Install Perl dependencies
+      run: cpan install "Switch" "Text::Unaccent::PurePerl"
+
+    - name: Set up JDK 11 for x64
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+        architecture: x64
+
+    - name: Checkout LT
+      uses: actions/checkout@v3
+      with:
+        repository: languagetool-org/languagetool
+        path: ${{ env.LT_HOME }}
+        token: ${{ secrets.LT_OS_TOKEN }}
+        # TODO: remove this once the new tokenisation branch is merged into master!
+        branch: pt/dict/new_tokenisation
+
+    - name: Build LT
+      working-directory: ${{ env.LT_HOME }}
+      run: mvn clean install -DskipTests
+
+    - name: Build POS tagging dictionary
+      working-directory: ${{ env.FR_DICT_HOME }}
+      run: |
+        poetry run python "dict_tools/scripts/build_tagger_dicts.py" \
+          --language fr \
+          --force-install \
+          --install-version "${{ env.FR_DICT_VERSION }}"
+
+    - name: Update dictionary version in LT pom.xml
+      working-directory: ${{ env.FR_DICT_HOME }}
+      run: |
+        poetry run python "dict_tools/scripts/update_pom.py" \
+          --new-version "${{ env.FR_DICT_VERSION }}" \
+          --package-name "french-pos-dict"
+
+    - name: Test LT
+      working-directory: ${{ env.LT_HOME }}
+      run: |
+        mvn clean install -DskipTests
+        ./build.sh fr test
