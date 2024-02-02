@@ -75,8 +75,8 @@ jobs:
         repository: languagetool-org/languagetool
         path: ${{ env.LT_HOME }}
         token: ${{ secrets.LT_OS_TOKEN }}
-        # TODO: remove this once the new tokenisation branch is merged into master!
-        branch: pt/dict/new_tokenisation
+        # TODO: remove this once this branch (with updated tests) is merged into master!
+        branch: fr/dict/new_version
 
     - name: Build LT
       working-directory: ${{ env.LT_HOME }}
