@@ -6,6 +6,14 @@ source "${SOURCE_DIR}/SuppressionDoublons.sh"
 DICOLLECTE_FILENAME="lexique-grammalecte-fr-v7.0"
 SRC_DICOLLECTE_FILEPATH="${DATA_SRC_DIR}/${DICOLLECTE_FILENAME}"
 LT_DICOLLECTE_FILEPATH="${RESULTS_DIR}/fr"
+LT_READY_FILEPATH="${DATA_SRC_DIR}/dict.txt"
+
+# If the prepared file already exists, just copy that to the LT dir and compile
+if [ -f "${LT_READY_FILEPATH}" ]; then
+    echo "File ready for compilation found; copying and exiting..."
+    cp "${LT_READY_FILEPATH}" "${RESULTS_DIR}/dict.txt"
+    exit 0
+fi
 
 # Remove all "fr." prefixed files from results dir before starting
 rm "${RESULTS_DIR}/fr."*
@@ -41,8 +49,4 @@ sort "${LT_DICOLLECTE_FILEPATH}.fixed.lt.txt" > "${LT_DICOLLECTE_FILEPATH}.sorte
 echo "Step 7: deduping..."
 FontionSuppressionDoublons "$LT_DICOLLECTE_FILEPATH"
 
-# Kludgey, but necessary for some insane reason
-echo "Step 8: adding trailing chars..."
-sed -E "s/$/ /" "${LT_DICOLLECTE_FILEPATH}.deduped.txt" > "${LT_DICOLLECTE_FILEPATH}.spaced.txt"
-
-cp "${LT_DICOLLECTE_FILEPATH}.spaced.txt" "${RESULTS_DIR}/dict.txt"
+cp "${LT_DICOLLECTE_FILEPATH}.deduped.txt" "${RESULTS_DIR}/dict.txt"
