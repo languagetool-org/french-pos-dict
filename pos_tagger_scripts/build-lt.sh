@@ -33,11 +33,16 @@ cat "${LT_CHANGES_DIR}/added-clean.txt" "${LT_DICOLLECTE_FILEPATH}.removed.lt.tx
 # Main output: fr.added.lt.txt
 
 echo "Step 5: fixing adjective lemmata: infinitive -> adj m s..."
-sed -E 's/^(.*(é|ée|és|ées)\t.*)er\t(J .*)$/\1é\t\3/' "${LT_DICOLLECTE_FILEPATH}.added.lt.txt" > "${LT_DICOLLECTE_FILEPATH}.fixed.lt.txt"
+sed -E "s/^(.*(é|ée|és|ées)\t.*)er\t(J .*)$/\1é\t\3/" "${LT_DICOLLECTE_FILEPATH}.added.lt.txt" > "${LT_DICOLLECTE_FILEPATH}.fixed.lt.txt"
 
 echo "Step 6: sorting..."
 sort "${LT_DICOLLECTE_FILEPATH}.fixed.lt.txt" > "${LT_DICOLLECTE_FILEPATH}.sorted.txt"
 
 echo "Step 7: deduping..."
 FontionSuppressionDoublons "$LT_DICOLLECTE_FILEPATH"
-cp "${LT_DICOLLECTE_FILEPATH}.deduped.txt" "${RESULTS_DIR}/dict.txt"
+
+# Kludgey, but necessary for some insane reason
+echo "Step 8: adding trailing chars..."
+sed -E "s/$/ /" "${LT_DICOLLECTE_FILEPATH}.deduped.txt" > "${LT_DICOLLECTE_FILEPATH}.spaced.txt"
+
+cp "${LT_DICOLLECTE_FILEPATH}.spaced.txt" "${RESULTS_DIR}/dict.txt"
