@@ -5,4 +5,7 @@ lexique-dicollecte*
 README_lexique.txt
 old-french-*
 *.dump
-results/lt/fr.*
+results/lt/*.txt
+results/lt/*.dump
+results/lt/*.err
+results/java-lt/src/**/*
