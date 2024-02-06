@@ -42,10 +42,16 @@ jobs:
       working-directory: ${{ env.FR_DICT_HOME }}
       run: poetry check
 
+    - name: Cache Poetry virtualenv
+      uses: actions/cache@v2
+      with:
+        path: ~/.cache/pypoetry/virtualenvs
+        key: ${{ runner.os }}-poetry-${{ hashFiles('**/poetry.lock') }}
+
     # Ideally this will also install the 'dict_tools' submodule as a separate package ('dictionary-tools')
     - name: Install Python dependencies
       working-directory: ${{ env.FR_DICT_HOME }}
-      run: poetry install
+      run: poetry install --no-root
       env:
         POETRY_HTTP_BASIC_GITLAB_USERNAME: "lt-ai-package-registry"
         POETRY_HTTP_BASIC_GITLAB_PASSWORD: ${{ secrets.POETRY_HTTP_BASIC_GITLAB_PASSWORD }}
@@ -75,8 +81,6 @@ jobs:
         repository: languagetool-org/languagetool
         path: ${{ env.LT_HOME }}
         token: ${{ secrets.LT_OS_TOKEN }}
-        # TODO: remove this once this branch (with updated tests) is merged into master!
-        branch: fr/dict/new_version
 
     - name: Build LT
       working-directory: ${{ env.LT_HOME }}
@@ -88,6 +92,7 @@ jobs:
         poetry run python "dict_tools/scripts/build_tagger_dicts.py" \
           --language fr \
           --force-install \
+          --spelling \
           --install-version "${{ env.FR_DICT_VERSION }}"
 
     - name: Update dictionary version in LT pom.xml
