@@ -62,6 +62,6 @@ The main script, named `build-lt.sh`, orchestrates the entire process step by st
  `dict.txt` is ready for use. 
 
 This final file is now directly accessible in `data/dict.txt`, simplifying the addition of new data without the need to modify the Dicollecte file. 
-Further investigation is required to understand and potentially optimize certain steps in the process. 
+Further investigation is required to understand and potentially optimise certain steps in the process. 
 A full rewrite in Python would make the whole process more stable and future-proof.
 
