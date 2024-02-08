@@ -30,10 +30,6 @@ Consequently, the steps preceding Step 4 are no longer necessary for replication
 ### Main Script: `build-lt`
 The main script, named `build-lt.sh`, orchestrates the entire process step by step with added debugging functionalities. At each stage, the script echoes the current step, and each step outputs a file with a unique name, facilitating easy tracking and debugging. This was not as readable in the original state of the repo.
 
-
-**Sources:**
-- Grammalectv7.0 data
-- French frequency words list (both legacy and already present in the repository)
 #### Step 1: Degreasing (`Degraissage.sh`)
 - **Input:** Grammalectv7.0 data
 - **Output:** `maigre.txt` (meaning "lean")
