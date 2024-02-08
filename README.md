@@ -63,5 +63,5 @@ The main script, named `build-lt.sh`, orchestrates the entire process step by st
 
 This final file is now directly accessible in the data, simplifying the addition of new data without modifying the dicollecte file. 
 Further investigation is required to understand and potentially optimize certain steps in the process. 
-A full rewriting in python would make the whole process more stable and future-proofed.
+A full rewrite in Python would make the whole process more stable and future-proof.
 
