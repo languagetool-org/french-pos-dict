@@ -27,8 +27,8 @@ The Part-of-Speech (PoS) tagging logic is outlined below.
 However, with the discontinuation of the Grammalecte project in December 2022, there will be no new dicollecte releases. 
 Consequently, the steps preceding Step 4 are no longer necessary for replication.
 
-### Main Script: `Build_LT`
-The main script, named `Build_LT`, orchestrates the entire process step by step with added debugging functionalities. At each stage, the script echoes the current step, and each step outputs a file with a unique name, facilitating easy tracking and debugging. This was not as readable in the original state of the repo.
+### Main Script: `build-lt`
+The main script, named `build-lt.sh`, orchestrates the entire process step by step with added debugging functionalities. At each stage, the script echoes the current step, and each step outputs a file with a unique name, facilitating easy tracking and debugging. This was not as readable in the original state of the repo.
 
 
 **Dependencies:**
