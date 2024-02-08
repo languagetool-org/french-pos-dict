@@ -58,7 +58,7 @@ The main script, named `build-lt.sh`, orchestrates the entire process step by st
 #### Step 7: Removal of Duplicates (`SuppressionDoublons.sh`)
 - **Input:** `fr.simplif.txt`
 - **Output:** `fr.simplif.txt`
-    A cleanup script (`SuppressionDoublons.sh`) removes duplicates generated in the Step 6, through a discutable method. In the future, we should implement a new method, utilizing `sort` and `uniq` for optimization.
+    A cleanup script (`SuppressionDoublons.sh`) removes duplicates generated in the Step 6. In the future, we should implement a new method, utilizing `sort` and `uniq` for optimization.
  `dict.txt` is ready for use. 
 
 This final file is now directly accessible in `data/dict.txt`, simplifying the addition of new data without the need to modify the Dicollecte file. 
