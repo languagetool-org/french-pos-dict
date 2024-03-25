@@ -8,31 +8,29 @@ SRC_DICOLLECTE_FILEPATH="${DATA_SRC_DIR}/${DICOLLECTE_FILENAME}"
 LT_DICOLLECTE_FILEPATH="${RESULTS_DIR}/fr"
 LT_READY_FILEPATH="${DATA_SRC_DIR}/dict.txt"
 
-# If the prepared file already exists, just copy that to the LT dir and compile
-if [ -f "${LT_READY_FILEPATH}" ]; then
-    echo "File ready for compilation found; copying and exiting..."
-    cp "${LT_READY_FILEPATH}" "${RESULTS_DIR}/dict.txt"
-    exit 0
-fi
-
 # Remove all "fr." prefixed files from results dir before starting
 rm "${RESULTS_DIR}/fr."*
 
-cp "${SRC_DICOLLECTE_FILEPATH}.txt" "${LT_DICOLLECTE_FILEPATH}.txt"
+# If the prepared file already exists, just copy that to the LT dir, and then move on with added/removed steps
+if [ -f "${LT_READY_FILEPATH}" ]; then
+    echo "File ready for compilation found; skipping steps 1-3..."
+    cp "${LT_READY_FILEPATH}" "${LT_DICOLLECTE_FILEPATH}.lt.simplif.txt"
+else
+  cp "${SRC_DICOLLECTE_FILEPATH}.txt" "${LT_DICOLLECTE_FILEPATH}.txt"
 
-echo "Formatting lexical data..."
+  echo "Formatting lexical data..."
+  echo "Step 1: dégraissage..."
+  bash "${SOURCE_DIR}/Degraissage.sh" "${LT_DICOLLECTE_FILEPATH}"
+  # Main output: fr.maigre.txt
 
-echo "Step 1: dégraissage..."
-bash "${SOURCE_DIR}/Degraissage.sh" "${LT_DICOLLECTE_FILEPATH}"
-# Main output: fr.maigre.txt
+  echo "Step 2: dicollecte formatting with Perl..."
+  perl "${SOURCE_DIR}/DicollecteDataFormatting.pl" "${LT_DICOLLECTE_FILEPATH}"
+  # Main output: fr.lt.txt
 
-echo "Step 2: dicollecte formatting with Perl..."
-perl "${SOURCE_DIR}/DicollecteDataFormatting.pl" "${LT_DICOLLECTE_FILEPATH}"
-# Main output: fr.lt.txt
-
-echo "Step 3: simplification..."
-bash "${SOURCE_DIR}/Simplification.sh" "${LT_DICOLLECTE_FILEPATH}.lt"
-# Main output: fr.lt.simplif.txt
+  echo "Step 3: simplification..."
+  bash "${SOURCE_DIR}/Simplification.sh" "${LT_DICOLLECTE_FILEPATH}.lt"
+  # Main output: fr.lt.simplif.txt
+fi
 
 echo "Step 4: making changes from added/removed.txt..."
 grep -Fvxf "${LT_CHANGES_DIR}/removed.txt" "${LT_DICOLLECTE_FILEPATH}.lt.simplif.txt" > "${LT_DICOLLECTE_FILEPATH}.removed.lt.txt"
