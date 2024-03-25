@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - "data/**"
+      - "lt-changes/**"
       - ".github/workflows/build.yml"
   pull_request:
     branches:
