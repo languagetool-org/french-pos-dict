@@ -1,7 +1,11 @@
-target
+results/java-lt/target/
 *.iml
 *.dict
 lexique-dicollecte*
 README_lexique.txt
 old-french-*
 *.dump
+results/lt/*.txt
+results/lt/*.dump
+results/lt/*.err
+results/java-lt/src/**/*
