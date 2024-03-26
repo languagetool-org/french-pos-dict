@@ -126,7 +126,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: src
-        path: ${{ env.PT_DICT_HOME }}/results/java-lt/src
+        path: ${{ env.FR_DICT_HOME }}/results/java-lt/src
 
   deploy:
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
