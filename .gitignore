@@ -9,3 +9,4 @@ results/lt/*.txt
 results/lt/*.dump
 results/lt/*.err
 results/java-lt/src/**/*
+lt-changes/added-clean.txt
