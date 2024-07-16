@@ -37,7 +37,7 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
       env:
-        LT_BRANCH: "pt/dict/v1.2.0"
+        LT_BRANCH: "master"
 
     - name: Set up Poetry
       uses: Gr1N/setup-poetry@v8
