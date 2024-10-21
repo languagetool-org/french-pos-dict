@@ -174,8 +174,8 @@ jobs:
       - name: Add dictionary version to package pom
         run: |
           poetry run python "dict_tools/scripts/update_pom.py" \
-            --new-version "${{ env.PT_DICT_VERSION }}" \
-            --package-name "portuguese-pos-dict" \
+            --new-version "${{ env.FR_DICT_VERSION }}" \
+            --package-name "french-pos-dict" \
             --verbosity debug
 
       - name: Set up JDK 17 for x64
