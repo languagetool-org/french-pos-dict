@@ -165,7 +165,7 @@ jobs:
         run: poetry check
 
       - name: Install Python dependencies
-        run: poetry install
+        run: poetry install --no-root
         env:
           POETRY_HTTP_BASIC_GITLAB_USERNAME: "lt-ai-package-registry"
           POETRY_HTTP_BASIC_GITLAB_PASSWORD: ${{ secrets.POETRY_HTTP_BASIC_GITLAB_PASSWORD }}
